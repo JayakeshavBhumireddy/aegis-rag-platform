@@ -1,0 +1,96 @@
+version: datasets-v1
+status: draft
+last_updated: 2026-05-07
+
+datasets:
+  - id: msmarco-passage-ranking
+    name: MS MARCO Passage Ranking
+    primary_use:
+      - large_scale_retrieval
+      - reranking
+      - offline_evals
+      - latency_benchmarking
+    source_url: https://microsoft.github.io/msmarco
+    expected_scale: "8.8M passages in official passage ranking corpus"
+    license_notes: "Subject to Microsoft MS MARCO terms. Review before redistribution or commercial use."
+    pii_risk: low_to_medium
+    ingestion_priority: 1
+    recommended_phases:
+      - local_subset_50k_to_100k
+      - performance_subset_1m
+      - full_corpus
+    required_artifacts:
+      - collection.tsv
+      - queries
+      - qrels
+    evals_supported:
+      - recall_at_k
+      - mrr_at_10
+      - ndcg
+      - reranker_quality
+
+  - id: beir
+    name: BEIR Benchmark
+    primary_use:
+      - cross_domain_retrieval
+      - regression_evals
+      - robustness_testing
+    source_url: https://huggingface.co/datasets/BeIR/beir-corpus
+    expected_scale: "multiple datasets across retrieval tasks"
+    license_notes: "Dataset-specific licenses apply. Verify per subset."
+    pii_risk: varies_by_subset
+    ingestion_priority: 2
+    recommended_subsets:
+      - scifact
+      - fever
+      - nfcorpus
+      - hotpotqa
+    evals_supported:
+      - recall_at_k
+      - ndcg
+      - domain_generalization
+
+  - id: wikipedia-en
+    name: Wikimedia English Wikipedia
+    primary_use:
+      - large_corpus_indexing
+      - scale_testing
+      - general_knowledge_retrieval
+    source_url: https://huggingface.co/datasets/wikimedia/wikipedia
+    expected_scale: "millions of articles depending on dump"
+    license_notes: "Wikipedia content licensing applies. Preserve attribution requirements."
+    pii_risk: medium
+    ingestion_priority: 3
+    recommended_phases:
+      - selected_topics_subset
+      - 1m_article_subset
+      - full_dump_optional
+    evals_supported:
+      - retrieval_latency
+      - index_scale
+      - grounding_quality
+
+  - id: synthetic-enterprise-product-help
+    name: Synthetic Enterprise Product Help Corpus
+    primary_use:
+      - entitlement_policy_testing
+      - license_denial_testing
+      - navigation_graph_testing
+      - permission_denial_testing
+    source_url: internal_generated
+    expected_scale: "start 500-5000 synthetic docs/routes"
+    license_notes: "Synthetic content only. Do not include proprietary or customer data unless approved."
+    pii_risk: low
+    ingestion_priority: 0
+    required_artifacts:
+      - modules
+      - licenses
+      - permissions
+      - routes
+      - workflows
+      - golden_questions
+    evals_supported:
+      - license_compliance
+      - permission_compliance
+      - navigation_accuracy
+      - refusal_accuracy

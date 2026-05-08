@@ -1,0 +1,12 @@
+nameOverride: assistant-api
+
+image:
+  repository: example/assistant-api
+  tag: "0.1.0"
+
+env:
+  - name: APP_ENV
+    value: dev
+  - name: SERVICE_NAME
+    value: assistant-api
+

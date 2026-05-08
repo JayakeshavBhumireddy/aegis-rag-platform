@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegisrag.local/schemas/chat-api-v1.schema.json",
+  "title": "AegisRAG Chat API V1",
+  "type": "object",
+  "$defs": {
+    "ChatRequest": {
+      "type": "object",
+      "required": ["message", "tenantId", "userId", "sessionId"],
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "tenantId": { "type": "string" },
+        "userId": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "uiContext": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "module": { "type": ["string", "null"] },
+            "page": { "type": ["string", "null"] },
+            "action": { "type": ["string", "null"] },
+            "locale": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "ChatResponse": {
+      "type": "object",
+      "required": ["answer", "citations", "confidence", "route"],
+      "additionalProperties": false,
+      "properties": {
+        "answer": { "type": "string" },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["sourceId", "chunkId", "title"],
+            "properties": {
+              "sourceId": { "type": "string" },
+              "chunkId": { "type": "string" },
+              "title": { "type": "string" },
+              "url": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "route": { "type": "string" },
+        "escalation": {
+          "type": ["object", "null"],
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
+

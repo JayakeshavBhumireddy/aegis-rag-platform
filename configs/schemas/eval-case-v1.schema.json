@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegisrag.local/schemas/eval-case-v1.schema.json",
+  "title": "AegisRAG Eval Case V1",
+  "type": "object",
+  "required": ["id", "question", "tenantContext", "expectedBehavior", "riskLevel"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "question": { "type": "string" },
+    "tenantContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "expectedBehavior": {
+      "type": "string",
+      "enum": ["answer", "deny", "escalate", "ask_clarifying_question"]
+    },
+    "expectedModules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "forbiddenContent": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "mustCiteSource": {
+      "type": "boolean",
+      "default": true
+    },
+    "riskLevel": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    }
+  }
+}
+

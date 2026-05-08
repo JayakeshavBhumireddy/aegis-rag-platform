@@ -1,0 +1,27 @@
+[project]
+name = "aegis-rag-platform"
+version = "0.1.0"
+description = "Enterprise-grade tenant-aware RAG platform."
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "alembic>=1.13.0",
+  "httpx>=0.27.0",
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+  "ruff>=0.7.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+

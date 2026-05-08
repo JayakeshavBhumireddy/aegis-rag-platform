@@ -1,0 +1,27 @@
+version: trace-fields-v1
+required_fields:
+  - requestId
+  - traceId
+  - tenantId
+  - userHash
+  - sessionHash
+  - route
+  - intent
+  - risk
+  - policyVersion
+  - promptVersion
+  - indexVersion
+  - modelProvider
+  - modelName
+  - cacheResult
+  - guardrailDecision
+  - verificationResult
+  - latencyMs
+  - costUsd
+
+redaction:
+  hash_user_id: true
+  hash_session_id: true
+  log_raw_prompt: false
+  log_raw_sensitive_data: false
+

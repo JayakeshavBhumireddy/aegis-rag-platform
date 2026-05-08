@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-placeholder
+  namespace: aegis-system
+data:
+  README: "Replace with managed OpenTelemetry Collector deployment values."
+

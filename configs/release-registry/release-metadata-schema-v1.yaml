@@ -1,0 +1,29 @@
+version: release-metadata-schema-v1
+required:
+  - releaseId
+  - environment
+  - appVersion
+  - contentVersion
+  - indexVersion
+  - promptVersion
+  - policyVersion
+  - guardrailVersion
+  - routerConfigVersion
+  - evalDatasetVersion
+  - evalRunId
+  - promotedAt
+
+example:
+  releaseId: release-2026-05-08-001
+  environment: dev
+  appVersion: 0.1.0
+  contentVersion: synthetic-content-v1
+  indexVersion: synthetic-index-v1
+  promptVersion: answer-prompt-v1
+  policyVersion: policy-baseline-v1
+  guardrailVersion: guardrails-v1
+  routerConfigVersion: inference-routes-v1
+  evalDatasetVersion: eval-synthetic-v1
+  evalRunId: eval-run-001
+  promotedAt: "2026-05-08T00:00:00Z"
+

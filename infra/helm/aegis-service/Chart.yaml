@@ -1,0 +1,7 @@
+apiVersion: v2
+name: aegis-service
+description: Reusable Helm chart for AegisRAG stateless services.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+

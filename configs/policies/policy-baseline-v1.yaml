@@ -1,0 +1,33 @@
+version: policy-baseline-v1
+
+fail_closed_dependencies:
+  - entitlement-service
+  - policy-service
+  - pii-scanner-for-sensitive-flows
+  - verification-service-for-high-risk-flows
+
+retrieval_requirements:
+  trust_level: approved
+  enforce_license_filter: true
+  enforce_permission_filter: true
+  enforce_state_filter: true
+  enforce_product_version_filter: true
+  enforce_tenant_filter: true
+
+customer_data_mode:
+  default: product_guidance_only
+  allow_person_specific_answers: false
+  allow_customer_record_answers: false
+  allow_financial_record_answers: false
+  allow_write_actions: false
+
+caching:
+  require_entitlement_scoped_keys: true
+  allow_global_cache_for_public_content_only: true
+  cache_sensitive_answers: false
+
+response_requirements:
+  require_citations_for_rag_answers: true
+  block_unlicensed_module_steps: true
+  block_permission_denied_actions: true
+  block_uncited_product_claims: true

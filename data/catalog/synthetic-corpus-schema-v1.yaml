@@ -1,0 +1,69 @@
+version: synthetic-corpus-schema-v1
+
+entities:
+  module:
+    required:
+      - moduleId
+      - name
+      - requiredLicense
+
+  permission:
+    required:
+      - permissionId
+      - moduleId
+      - action
+
+  route:
+    required:
+      - routeId
+      - moduleId
+      - screen
+      - path
+      - requiredPermissions
+
+  document:
+    required:
+      - sourceId
+      - title
+      - moduleId
+      - trustLevel
+      - productVersion
+      - body
+
+  eval_case:
+    required:
+      - id
+      - question
+      - tenantContext
+      - expectedBehavior
+      - riskLevel
+
+example_module:
+  moduleId: billing
+  name: Billing
+  requiredLicense: Billing
+
+example_permission:
+  permissionId: Billing.Submit
+  moduleId: billing
+  action: submit
+
+example_route:
+  routeId: billing.monthly_submission
+  moduleId: billing
+  screen: Monthly Submission
+  path:
+    - Billing
+    - Monthly Submission
+  requiredPermissions:
+    - Billing.View
+    - Billing.Submit
+
+example_document:
+  sourceId: doc_billing_monthly_submission
+  title: Monthly Submission Workflow
+  moduleId: billing
+  trustLevel: approved
+  productVersion: "2026.2"
+  body: "To submit a monthly item, open Billing, then Monthly Submission."
+

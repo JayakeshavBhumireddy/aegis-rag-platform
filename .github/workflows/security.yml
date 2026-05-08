@@ -1,0 +1,28 @@
+name: security
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  security-baseline:
+    name: Security baseline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for obvious secret placeholders
+        run: |
+          ! grep -RIn --exclude-dir=.git --exclude=.env.example "AKIA\|BEGIN RSA PRIVATE KEY\|BEGIN OPENSSH PRIVATE KEY" .
+
+      - name: Validate security docs exist
+        run: |
+          test -f docs/security/threat-model-v1.md
+          test -f docs/security/data-classification-v1.md
+          test -f docs/security/cache-isolation-v1.md
+          test -f docs/security/prompt-injection-defense-v1.md
+

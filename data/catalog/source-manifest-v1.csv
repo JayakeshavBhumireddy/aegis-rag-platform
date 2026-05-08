@@ -1,0 +1,8 @@
+dataset_id,name,source_url,priority,phase,expected_scale,pii_risk,license_review_required
+synthetic-enterprise-product-help,Synthetic Enterprise Product Help Corpus,internal_generated,0,phase_0,500-5000 docs/routes/questions,low,no
+msmarco-passage-ranking-small,MS MARCO Passage Ranking Small Subset,https://microsoft.github.io/msmarco,1,phase_1,50k-100k passages,low_to_medium,yes
+msmarco-passage-ranking-1m,MS MARCO Passage Ranking 1M Subset,https://microsoft.github.io/msmarco,1,phase_2,1m passages,low_to_medium,yes
+msmarco-passage-ranking-full,MS MARCO Passage Ranking Full Corpus,https://microsoft.github.io/msmarco,1,phase_3,8.8m passages,low_to_medium,yes
+beir-scifact,BEIR SciFact,https://huggingface.co/datasets/BeIR/beir-corpus,2,phase_4,small retrieval benchmark,low,yes
+beir-fever,BEIR FEVER,https://huggingface.co/datasets/BeIR/beir-corpus,2,phase_4,medium retrieval benchmark,medium,yes
+wikipedia-en-subset,Wikimedia English Wikipedia Subset,https://huggingface.co/datasets/wikimedia/wikipedia,3,phase_5,selected subset to 1m articles,medium,yes

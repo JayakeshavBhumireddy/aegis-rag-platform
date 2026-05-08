@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegisrag.local/schemas/core-contracts-v1.schema.json",
+  "title": "AegisRAG Core Contracts V1",
+  "type": "object",
+  "$defs": {
+    "UiContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "module": { "type": ["string", "null"] },
+        "page": { "type": ["string", "null"] },
+        "action": { "type": ["string", "null"] },
+        "locale": { "type": ["string", "null"] }
+      }
+    },
+    "EntitlementEnvelope": {
+      "type": "object",
+      "required": [
+        "tenantId",
+        "userId",
+        "region",
+        "productVersion",
+        "licensedModules",
+        "enabledFeatures",
+        "role",
+        "permissions",
+        "licenseHash",
+        "permissionHash",
+        "dataAccessMode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tenantId": { "type": "string" },
+        "userId": { "type": "string" },
+        "region": { "type": "string" },
+        "productVersion": { "type": "string" },
+        "licensedModules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "enabledFeatures": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "role": { "type": "string" },
+        "permissions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "licenseHash": { "type": "string" },
+        "permissionHash": { "type": "string" },
+        "dataAccessMode": {
+          "type": "string",
+          "enum": ["product_guidance_only", "secure_customer_data", "disabled"]
+        }
+      }
+    },
+    "PolicyDecision": {
+      "type": "object",
+      "required": ["decision", "canRetrieve", "canAnswer", "canCache", "mustEscalate", "retrievalScope"],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["allow", "deny", "escalate"]
+        },
+        "canRetrieve": { "type": "boolean" },
+        "canAnswer": { "type": "boolean" },
+        "canCache": { "type": "boolean" },
+        "mustEscalate": { "type": "boolean" },
+        "retrievalScope": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      }
+    },
+    "Citation": {
+      "type": "object",
+      "required": ["sourceId", "chunkId", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": { "type": "string" },
+        "chunkId": { "type": "string" },
+        "title": { "type": "string" },
+        "url": { "type": ["string", "null"] }
+      }
+    },
+    "RetrievalResult": {
+      "type": "object",
+      "required": ["chunkId", "sourceId", "title", "text", "score", "metadata"],
+      "additionalProperties": false,
+      "properties": {
+        "chunkId": { "type": "string" },
+        "sourceId": { "type": "string" },
+        "title": { "type": "string" },
+        "text": { "type": "string" },
+        "score": { "type": "number" },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "VerificationResult": {
+      "type": "object",
+      "required": [
+        "verified",
+        "grounded",
+        "citationsValid",
+        "permissionCompliant",
+        "piiSafe",
+        "confidence",
+        "reasons"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "verified": { "type": "boolean" },
+        "grounded": { "type": "boolean" },
+        "citationsValid": { "type": "boolean" },
+        "permissionCompliant": { "type": "boolean" },
+        "piiSafe": { "type": "boolean" },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+

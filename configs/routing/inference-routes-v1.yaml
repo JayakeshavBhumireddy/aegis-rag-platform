@@ -1,0 +1,61 @@
+version: inference-routes-v1
+default_route_order:
+  - exact_cache
+  - semantic_cache
+  - navigation_graph
+  - precomputed_answer
+  - scoped_rag_small_model
+  - scoped_rag_strong_model
+  - denial_or_escalation
+
+routes:
+  navigation:
+    max_latency_ms: 800
+    max_cost_usd: 0.001
+    allowed_paths:
+      - exact_cache
+      - semantic_cache
+      - navigation_graph
+      - precomputed_answer
+      - small_model
+    allow_strong_model: false
+    streaming_allowed: true
+
+  workflow_help:
+    max_latency_ms: 3500
+    max_cost_usd: 0.01
+    allowed_paths:
+      - exact_cache
+      - semantic_cache
+      - precomputed_answer
+      - scoped_rag_small_model
+      - scoped_rag_strong_model
+    allow_strong_model: true
+    streaming_allowed: true
+
+  troubleshooting:
+    max_latency_ms: 6000
+    max_cost_usd: 0.03
+    allowed_paths:
+      - semantic_cache
+      - scoped_rag_small_model
+      - scoped_rag_strong_model
+      - escalation
+    allow_strong_model: true
+    streaming_allowed: true
+
+  customer_data_request:
+    max_latency_ms: 3000
+    max_cost_usd: 0.0
+    allowed_paths:
+      - denial_or_escalation
+    allow_strong_model: false
+    streaming_allowed: false
+
+  unsafe_or_injection:
+    max_latency_ms: 500
+    max_cost_usd: 0.0
+    allowed_paths:
+      - denial
+    allow_strong_model: false
+    streaming_allowed: false
