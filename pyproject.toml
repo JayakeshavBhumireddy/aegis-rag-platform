@@ -3,7 +3,9 @@ name = "aegis-rag-platform"
 version = "0.1.0"
 description = "Enterprise-grade tenant-aware RAG platform."
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+  "pydantic>=2.8.0",
+]
 
 [dependency-groups]
 dev = [
@@ -24,4 +26,3 @@ select = ["E", "F", "I", "B", "UP"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-

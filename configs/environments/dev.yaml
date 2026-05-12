@@ -1,0 +1,27 @@
+version: dev-environment-v1
+environment: dev
+
+service_defaults:
+  log_level: INFO
+  request_timeout_ms: 5000
+
+metadata:
+  database_url_env: DATABASE_URL
+
+cache:
+  provider: elasticache-valkey
+
+retrieval:
+  keyword_provider: opensearch
+  vector_provider: opensearch
+
+llm_gateway:
+  default_provider: bedrock
+  allow_external_calls: true
+
+versions:
+  prompt_version: answer-prompt-v1
+  policy_version: policy-baseline-v1
+  route_config_version: inference-routes-v1
+  guardrail_version: guardrails-dev-v1
+

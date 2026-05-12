@@ -1,0 +1,32 @@
+version: local-environment-v1
+environment: local
+
+service_defaults:
+  log_level: INFO
+  otel_endpoint: http://localhost:4318
+  request_timeout_ms: 3000
+
+metadata:
+  database_url_env: DATABASE_URL
+  default_database_url: postgresql+psycopg://aegisrag:change-me-local-only@localhost:5432/aegisrag
+
+cache:
+  provider: redis
+  url: redis://localhost:6379/0
+
+retrieval:
+  keyword_provider: opensearch
+  keyword_url: http://localhost:9200
+  vector_provider: qdrant
+  vector_url: http://localhost:6333
+
+llm_gateway:
+  default_provider: none
+  allow_external_calls: false
+
+versions:
+  prompt_version: answer-prompt-v1
+  policy_version: policy-baseline-v1
+  route_config_version: inference-routes-v1
+  guardrail_version: guardrails-local-v1
+
