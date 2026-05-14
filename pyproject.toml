@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Enterprise-grade tenant-aware RAG platform."
 requires-python = ">=3.12"
 dependencies = [
+  "fastapi>=0.115.0",
   "pydantic>=2.8.0",
+  "uvicorn[standard]>=0.30.0",
 ]
 
 [dependency-groups]
@@ -24,5 +26,11 @@ target-version = "py312"
 select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = [
+  "services/entitlement-service/tests",
+]
 asyncio_mode = "auto"
+pythonpath = [
+  "packages",
+  "services/entitlement-service/src",
+]

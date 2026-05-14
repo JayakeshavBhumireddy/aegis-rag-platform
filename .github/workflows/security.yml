@@ -16,8 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check for obvious secret placeholders
-        run: |
-          ! grep -RIn --exclude-dir=.git --exclude=.env.example "AKIA\|BEGIN RSA PRIVATE KEY\|BEGIN OPENSSH PRIVATE KEY" .
+        run: python scripts/validation/check_repo_hygiene.py
 
       - name: Validate security docs exist
         run: |
@@ -25,4 +24,3 @@ jobs:
           test -f docs/security/data-classification-v1.md
           test -f docs/security/cache-isolation-v1.md
           test -f docs/security/prompt-injection-defense-v1.md
-

@@ -27,9 +27,9 @@ BLOCKED_SUFFIXES = {
     ".key",
 }
 BLOCKED_CONTENT = [
-    "BEGIN RSA PRIVATE KEY",
-    "BEGIN OPENSSH PRIVATE KEY",
-    "AKIA",
+    "BEGIN " + "RSA PRIVATE KEY",
+    "BEGIN " + "OPENSSH PRIVATE KEY",
+    "AK" + "IA",
 ]
 
 
@@ -75,4 +75,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

@@ -1,4 +1,5 @@
 SHELL := /bin/sh
+PYTHON ?= python3
 
 .PHONY: help
 help:
@@ -37,17 +38,17 @@ tf-validate-dev:
 
 .PHONY: check
 check:
-	python scripts/validation/validate_configs.py
-	python scripts/validation/check_repo_hygiene.py
+	$(PYTHON) scripts/validation/validate_configs.py
+	$(PYTHON) scripts/validation/check_repo_hygiene.py
 
 .PHONY: validate-configs
 validate-configs:
-	python scripts/validation/validate_configs.py
+	$(PYTHON) scripts/validation/validate_configs.py
 
 .PHONY: hygiene
 hygiene:
-	python scripts/validation/check_repo_hygiene.py
+	$(PYTHON) scripts/validation/check_repo_hygiene.py
 
 .PHONY: synthetic-data
 synthetic-data:
-	python scripts/data/generate_synthetic_corpus.py
+	$(PYTHON) scripts/data/generate_synthetic_corpus.py
