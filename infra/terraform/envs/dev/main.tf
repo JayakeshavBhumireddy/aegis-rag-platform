@@ -14,7 +14,12 @@ provider "aws" {
 }
 
 locals {
-  project     = "aegis-rag"
-  environment = "dev"
+  project         = "aegis-rag"
+  environment     = "dev"
+  service_catalog = jsondecode(file("${path.module}/../../../service-catalog/aegis-services.json"))
 }
 
+module "service_catalog" {
+  source  = "../../modules/service-catalog"
+  catalog = local.service_catalog
+}

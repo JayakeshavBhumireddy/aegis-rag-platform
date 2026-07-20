@@ -34,3 +34,17 @@ PYTHONPATH=packages:services/entitlement-service/src \
 The first implementation uses an in-memory entitlement store for contract and
 policy-flow development. Production resolution will replace this with source
 backed tenant, user, role, license, and permission providers.
+
+## Metadata Store Mode
+
+For local production-shaped testing, the service can resolve entitlements from
+the platform metadata tables:
+
+```bash
+export AEGIS_ENTITLEMENT_STORE_MODE=metadata
+export AEGIS_ENTITLEMENT_SQLITE_PATH=/path/to/platform-metadata.db
+```
+
+The metadata-backed resolver reads active tenants, users, tenant memberships,
+roles, active licenses, and role permissions. It fails closed when any required
+scope element is missing or disabled.

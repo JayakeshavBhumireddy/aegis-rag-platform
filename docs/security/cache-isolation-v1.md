@@ -27,5 +27,6 @@ index_version
 3. Permission-sensitive answers must include permission hash.
 4. License-sensitive answers must include license hash.
 5. Cached answers must store citation and verification metadata.
+6. Cache keys must include the active release ID so promoted prompt, policy,
+   guardrail, index, or route changes cannot reuse stale answers.
 6. Sensitive answers are not cached in V1.
-

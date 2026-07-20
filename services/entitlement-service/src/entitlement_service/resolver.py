@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
+from typing import Protocol
 
 from aegis_shared.contracts import DataAccessMode, EntitlementEnvelope
 
@@ -34,6 +35,10 @@ class InMemoryEntitlementStore:
         return self._principals.get((tenant_id, user_id))
 
 
+class EntitlementStore(Protocol):
+    def get(self, tenant_id: str, user_id: str) -> PrincipalEntitlements | None: ...
+
+
 def stable_scope_hash(values: tuple[str, ...]) -> str:
     canonical = "\n".join(sorted(values))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
@@ -42,7 +47,7 @@ def stable_scope_hash(values: tuple[str, ...]) -> str:
 def resolve_entitlement_envelope(
     tenant_id: str,
     user_id: str,
-    store: InMemoryEntitlementStore,
+    store: EntitlementStore,
 ) -> EntitlementEnvelope:
     principal = store.get(tenant_id=tenant_id, user_id=user_id)
     if principal is None:

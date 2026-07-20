@@ -3,7 +3,7 @@
 Status: draft  
 Version: event-contracts-v1
 
-Events are used for async work such as ingestion, evals, feedback, audit fanout, and release promotion.
+Events are used for async work such as ingestion, evals, feedback, audit fanout, cost tracking, and release promotion.
 
 ## Common Event Envelope
 
@@ -29,6 +29,7 @@ Events are used for async work such as ingestion, evals, feedback, audit fanout,
 | `aegis.eval.run.completed` | eval-service | release process | decide promotion |
 | `aegis.feedback.received` | assistant-api | eval/content workflows | improve content/evals |
 | `aegis.audit.record.created` | services | audit pipeline | durable audit fanout |
+| `aegis.cost.event.recorded` | assistant-api | cost pipeline | tenant and route cost ledger |
 | `aegis.release.promoted` | release process | all services | update active versions |
 
 ## Ingestion Requested Payload
@@ -39,6 +40,30 @@ Events are used for async work such as ingestion, evals, feedback, audit fanout,
   "sourceManifestVersion": "source-manifest-v1",
   "targetEnvironment": "dev",
   "requestedBy": "user_or_pipeline"
+}
+```
+
+## Cost Event Payload
+
+```json
+{
+  "tenantId": "tenant_123",
+  "userId": "user_123",
+  "route": "scoped_rag_http",
+  "usage": {
+    "estimatedLatencyMs": 900,
+    "estimatedCostUsd": 0.002,
+    "provider": "local-http-rag",
+    "inputTokens": 24,
+    "outputTokens": 12,
+    "route": "scoped_rag_http",
+    "currency": "USD"
+  },
+  "metadata": {
+    "sessionId": "session_123",
+    "citationCount": 1,
+    "confidence": 0.9
+  }
 }
 ```
 
@@ -62,4 +87,3 @@ Events are used for async work such as ingestion, evals, feedback, audit fanout,
   }
 }
 ```
-

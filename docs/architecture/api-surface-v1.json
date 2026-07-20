@@ -1,0 +1,110 @@
+{
+  "version": "api-surface-v1",
+  "services": {
+    "assistant-api": {
+      "app": "assistant_api.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/assistant/messages"}
+      ]
+    },
+    "auth-service": {
+      "app": "auth_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/auth/validate"}
+      ]
+    },
+    "context-service": {
+      "app": "context_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/context/build"}
+      ]
+    },
+    "entitlement-service": {
+      "app": "entitlement_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/entitlements/resolve"}
+      ]
+    },
+    "eval-service": {
+      "app": "eval_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/evals/synthetic-enterprise/run"},
+        {"method": "POST", "path": "/v1/evals/feedback/mine"},
+        {"method": "POST", "path": "/v1/releases/local/candidate"},
+        {"method": "POST", "path": "/v1/releases/local/promote"},
+        {"method": "POST", "path": "/v1/releases/local/rollback"}
+      ]
+    },
+    "ingestion-service": {
+      "app": "ingestion_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/ingestion/synthetic-enterprise/run"}
+      ]
+    },
+    "llm-gateway": {
+      "app": "llm_gateway.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/llm/generate"}
+      ]
+    },
+    "observability-service": {
+      "app": "observability_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/audit/records"},
+        {"method": "GET", "path": "/v1/audit/records"},
+        {"method": "POST", "path": "/v1/cost/events"},
+        {"method": "GET", "path": "/v1/cost/events"},
+        {"method": "POST", "path": "/v1/feedback/events"},
+        {"method": "GET", "path": "/v1/feedback/events"}
+      ]
+    },
+    "policy-service": {
+      "app": "policy_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/policy/evaluate"}
+      ]
+    },
+    "retrieval-service": {
+      "app": "retrieval_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/retrieval/search"}
+      ]
+    },
+    "reranker-service": {
+      "app": "reranker_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/rerank"}
+      ]
+    },
+    "verification-service": {
+      "app": "verification_service.main:app",
+      "routes": [
+        {"method": "GET", "path": "/health/live"},
+        {"method": "GET", "path": "/health/ready"},
+        {"method": "POST", "path": "/v1/verification/check"}
+      ]
+    }
+  }
+}

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from aegis_shared.contracts import DataAccessMode
 from entitlement_service.resolver import (
     EntitlementResolutionError,

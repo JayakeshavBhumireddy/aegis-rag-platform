@@ -19,3 +19,20 @@ Service deployments should generally use the reusable Helm chart in:
 infra/helm/aegis-service/
 ```
 
+## Network Policies
+
+The default policy denies all ingress and egress in `aegis-apps`.
+Catalog-derived allow policies are generated from:
+
+```text
+infra/service-catalog/aegis-services.json
+```
+
+Regenerate them with:
+
+```bash
+make k8s-policies
+```
+
+`make validate-infra` checks the generated policies exactly match the service
+catalog.

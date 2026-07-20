@@ -5,6 +5,7 @@ description = "Enterprise-grade tenant-aware RAG platform."
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115.0",
+  "httpx>=0.27.0",
   "pydantic>=2.8.0",
   "uvicorn[standard]>=0.30.0",
 ]
@@ -27,10 +28,32 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = [
+  "packages/aegis_shared/tests",
+  "services/auth-service/tests",
   "services/entitlement-service/tests",
+  "services/ingestion-service/tests",
+  "services/observability-service/tests",
+  "services/policy-service/tests",
+  "services/retrieval-service/tests",
+  "services/reranker-service/tests",
+  "services/verification-service/tests",
+  "services/assistant-api/tests",
+  "services/eval-service/tests",
+  "services/platform-metadata/tests",
 ]
 asyncio_mode = "auto"
 pythonpath = [
   "packages",
+  "services/auth-service/src",
   "services/entitlement-service/src",
+  "services/ingestion-service/src",
+  "services/observability-service/src",
+  "services/policy-service/src",
+  "services/retrieval-service/src",
+  "services/reranker-service/src",
+  "services/llm-gateway/src",
+  "services/verification-service/src",
+  "services/context-service/src",
+  "services/assistant-api/src",
+  "services/eval-service/src",
 ]

@@ -12,3 +12,9 @@ Responsibilities:
 Preferred runtime:
 
 - ONNX Runtime, NVIDIA Triton, or SageMaker real-time endpoints.
+
+Local slice:
+
+- `POST /v1/rerank`
+- deterministic lexical reranking
+- per-result `metadata.reranker` signals for explainability

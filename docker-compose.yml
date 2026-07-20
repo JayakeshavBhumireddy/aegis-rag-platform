@@ -1,6 +1,167 @@
 name: aegis-rag
 
+x-aegis-python-service: &aegis-python-service
+  build:
+    context: .
+    dockerfile: infra/docker/python-service.Dockerfile
+  image: aegis-rag-python-service:local
+  environment:
+    PORT: "8000"
+    AEGIS_AUTH_DEV_SECRET: "aegis-local-dev-secret"
+  volumes:
+    - ./data:/app/data
+    - ./configs:/app/configs:ro
+  healthcheck:
+    test:
+      [
+        "CMD",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready', timeout=2).read()",
+      ]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
 services:
+  auth-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-auth-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: auth_service.main:app
+      AEGIS_AUTH_DEV_SECRET: "aegis-local-dev-secret"
+    ports:
+      - "8010:8000"
+
+  entitlement-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-entitlement-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: entitlement_service.main:app
+      AEGIS_ENTITLEMENT_STORE_MODE: memory
+    ports:
+      - "8011:8000"
+
+  policy-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-policy-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: policy_service.main:app
+    ports:
+      - "8012:8000"
+
+  context-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-context-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: context_service.main:app
+    ports:
+      - "8013:8000"
+
+  retrieval-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-retrieval-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: retrieval_service.main:app
+    ports:
+      - "8014:8000"
+
+  reranker-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-reranker-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: reranker_service.main:app
+    ports:
+      - "8020:8000"
+
+  llm-gateway:
+    <<: *aegis-python-service
+    container_name: aegis-rag-llm-gateway
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: llm_gateway.main:app
+    ports:
+      - "8015:8000"
+
+  verification-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-verification-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: verification_service.main:app
+    ports:
+      - "8016:8000"
+
+  observability-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-observability-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: observability_service.main:app
+      AEGIS_OBSERVABILITY_STORE_MODE: sqlite
+      AEGIS_OBSERVABILITY_SQLITE_PATH: /app/data/observability/observability-events.db
+    ports:
+      - "8017:8000"
+
+  ingestion-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-ingestion-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: ingestion_service.main:app
+    ports:
+      - "8018:8000"
+
+  eval-service:
+    <<: *aegis-python-service
+    container_name: aegis-rag-eval-service
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: eval_service.main:app
+    ports:
+      - "8019:8000"
+
+  assistant-api:
+    <<: *aegis-python-service
+    container_name: aegis-rag-assistant-api
+    environment:
+      PORT: "8000"
+      AEGIS_SERVICE_APP: assistant_api.main:app
+      AEGIS_AUTH_DEV_SECRET: "aegis-local-dev-secret"
+      AEGIS_ASSISTANT_DEPENDENCY_MODE: http
+      AEGIS_ENTITLEMENT_URL: http://entitlement-service:8000
+      AEGIS_POLICY_URL: http://policy-service:8000
+      AEGIS_CONTEXT_URL: http://context-service:8000
+      AEGIS_RETRIEVAL_URL: http://retrieval-service:8000
+      AEGIS_LLM_GATEWAY_URL: http://llm-gateway:8000
+      AEGIS_VERIFICATION_URL: http://verification-service:8000
+      AEGIS_OBSERVABILITY_URL: http://observability-service:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      entitlement-service:
+        condition: service_healthy
+      policy-service:
+        condition: service_healthy
+      context-service:
+        condition: service_healthy
+      retrieval-service:
+        condition: service_healthy
+      llm-gateway:
+        condition: service_healthy
+      verification-service:
+        condition: service_healthy
+      observability-service:
+        condition: service_healthy
+
   postgres:
     image: postgres:16
     container_name: aegis-rag-postgres
@@ -66,4 +227,3 @@ volumes:
   postgres-data:
   qdrant-data:
   opensearch-data:
-

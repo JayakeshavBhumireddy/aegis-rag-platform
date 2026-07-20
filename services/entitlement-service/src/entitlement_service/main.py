@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+import sqlite3
 from typing import Annotated
 
+from aegis_shared.contracts import EntitlementEnvelope, UiContext
 from fastapi import Depends, FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
-from aegis_shared.contracts import EntitlementEnvelope, UiContext
+from entitlement_service.metadata_repository import MetadataEntitlementRepository
 from entitlement_service.resolver import (
     EntitlementResolutionError,
+    EntitlementStore,
     InMemoryEntitlementStore,
     resolve_entitlement_envelope,
 )
+from entitlement_service.settings import EntitlementSettings
 
 SERVICE_VERSION = "entitlement-service-v0"
 
@@ -28,7 +32,14 @@ class EntitlementResolveResponse(BaseModel):
     entitlement_envelope: EntitlementEnvelope = Field(alias="entitlementEnvelope")
 
 
-def get_store() -> InMemoryEntitlementStore:
+def get_store() -> EntitlementStore:
+    settings = EntitlementSettings.from_env()
+    if settings.store_mode == "metadata":
+        if not settings.sqlite_path:
+            raise EntitlementResolutionError("metadata store requires sqlite path")
+        connection = sqlite3.connect(settings.sqlite_path)
+        connection.row_factory = sqlite3.Row
+        return MetadataEntitlementRepository(connection)
     return store
 
 
@@ -45,7 +56,7 @@ def ready() -> dict[str, str]:
 @app.post("/v1/entitlements/resolve", response_model=EntitlementResolveResponse)
 def resolve_entitlements(
     request: EntitlementResolveRequest,
-    entitlement_store: Annotated[InMemoryEntitlementStore, Depends(get_store)],
+    entitlement_store: Annotated[EntitlementStore, Depends(get_store)],
 ) -> EntitlementResolveResponse:
     try:
         envelope = resolve_entitlement_envelope(

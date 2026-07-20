@@ -24,6 +24,7 @@ infra/terraform/
     eks/
     observability/
     bedrock-access/
+  service-catalog/
 ```
 
 ## Build Order
@@ -40,6 +41,14 @@ infra/terraform/
 10. observability
 11. model access
 
+## Service Catalog
+
+`infra/service-catalog/aegis-services.json` is the local deployment contract for
+AegisRAG services. The Terraform dev environment loads it through the
+`service-catalog` module so later EKS, Helm, IAM, and observability modules can
+consume the same service metadata that compose and smoke tests validate.
+
 ## Current Status
 
-The current files are safe placeholders. We will add real resources module by module.
+The current files define a validated local service catalog and safe placeholders
+for cloud resources. We will add real resources module by module.

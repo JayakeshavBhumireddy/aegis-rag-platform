@@ -43,3 +43,10 @@ Every request should be traceable across services.
 
 Standard logs must not contain raw sensitive data.
 
+## Durable Event Rule
+
+Audit, cost, and feedback events use the common event envelope and should be
+persisted to a durable event sink. The local stack uses SQLite-backed
+`observability_events` storage for restart-safe validation; production can
+replace this with the managed audit, cost, and telemetry pipeline while keeping
+the event envelope contract stable.

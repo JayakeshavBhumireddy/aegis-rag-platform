@@ -7,11 +7,10 @@ Create Date: 2026-05-12
 
 from __future__ import annotations
 
-from typing import Sequence
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 revision: str = "20260512_0001"
 down_revision: str | None = None
@@ -21,8 +20,18 @@ depends_on: str | Sequence[str] | None = None
 
 def timestamp_columns() -> list[sa.Column]:
     return [
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
     ]
 
 
@@ -63,14 +72,24 @@ def upgrade() -> None:
     op.create_table(
         "permissions",
         sa.Column("permission_id", sa.String(length=128), primary_key=True),
-        sa.Column("module_id", sa.String(length=128), sa.ForeignKey("modules.module_id"), nullable=False),
+        sa.Column(
+            "module_id",
+            sa.String(length=128),
+            sa.ForeignKey("modules.module_id"),
+            nullable=False,
+        ),
         sa.Column("action", sa.String(length=64), nullable=False),
         *timestamp_columns(),
     )
 
     op.create_table(
         "tenant_users",
-        sa.Column("tenant_id", sa.String(length=128), sa.ForeignKey("tenants.tenant_id"), nullable=False),
+        sa.Column(
+            "tenant_id",
+            sa.String(length=128),
+            sa.ForeignKey("tenants.tenant_id"),
+            nullable=False,
+        ),
         sa.Column("user_id", sa.String(length=128), sa.ForeignKey("users.user_id"), nullable=False),
         sa.Column("role_id", sa.String(length=128), sa.ForeignKey("roles.role_id"), nullable=False),
         sa.Column("status", sa.String(length=32), nullable=False, server_default="active"),
@@ -80,8 +99,18 @@ def upgrade() -> None:
 
     op.create_table(
         "tenant_licenses",
-        sa.Column("tenant_id", sa.String(length=128), sa.ForeignKey("tenants.tenant_id"), nullable=False),
-        sa.Column("module_id", sa.String(length=128), sa.ForeignKey("modules.module_id"), nullable=False),
+        sa.Column(
+            "tenant_id",
+            sa.String(length=128),
+            sa.ForeignKey("tenants.tenant_id"),
+            nullable=False,
+        ),
+        sa.Column(
+            "module_id",
+            sa.String(length=128),
+            sa.ForeignKey("modules.module_id"),
+            nullable=False,
+        ),
         sa.Column("license_status", sa.String(length=32), nullable=False, server_default="active"),
         sa.Column("effective_from", sa.DateTime(timezone=True), nullable=False),
         sa.Column("effective_to", sa.DateTime(timezone=True), nullable=True),
@@ -92,7 +121,12 @@ def upgrade() -> None:
     op.create_table(
         "role_permissions",
         sa.Column("role_id", sa.String(length=128), sa.ForeignKey("roles.role_id"), nullable=False),
-        sa.Column("permission_id", sa.String(length=128), sa.ForeignKey("permissions.permission_id"), nullable=False),
+        sa.Column(
+            "permission_id",
+            sa.String(length=128),
+            sa.ForeignKey("permissions.permission_id"),
+            nullable=False,
+        ),
         *timestamp_columns(),
         sa.PrimaryKeyConstraint("role_id", "permission_id"),
     )
@@ -110,7 +144,12 @@ def upgrade() -> None:
     op.create_table(
         "content_versions",
         sa.Column("content_version_id", sa.String(length=128), primary_key=True),
-        sa.Column("source_id", sa.String(length=128), sa.ForeignKey("content_sources.source_id"), nullable=False),
+        sa.Column(
+            "source_id",
+            sa.String(length=128),
+            sa.ForeignKey("content_sources.source_id"),
+            nullable=False,
+        ),
         sa.Column("checksum", sa.String(length=128), nullable=False),
         sa.Column("metadata_uri", sa.String(length=2048), nullable=False),
         *timestamp_columns(),
@@ -160,7 +199,12 @@ def upgrade() -> None:
     op.create_table(
         "eval_runs",
         sa.Column("eval_run_id", sa.String(length=128), primary_key=True),
-        sa.Column("release_id", sa.String(length=128), sa.ForeignKey("release_versions.release_id"), nullable=False),
+        sa.Column(
+            "release_id",
+            sa.String(length=128),
+            sa.ForeignKey("release_versions.release_id"),
+            nullable=False,
+        ),
         sa.Column("eval_dataset_version", sa.String(length=128), nullable=False),
         sa.Column("passed", sa.Boolean(), nullable=False),
         sa.Column("score_summary_uri", sa.String(length=2048), nullable=False),
@@ -170,8 +214,18 @@ def upgrade() -> None:
     op.create_table(
         "cost_events",
         sa.Column("cost_event_id", sa.String(length=128), primary_key=True),
-        sa.Column("tenant_id", sa.String(length=128), sa.ForeignKey("tenants.tenant_id"), nullable=False),
-        sa.Column("release_id", sa.String(length=128), sa.ForeignKey("release_versions.release_id"), nullable=False),
+        sa.Column(
+            "tenant_id",
+            sa.String(length=128),
+            sa.ForeignKey("tenants.tenant_id"),
+            nullable=False,
+        ),
+        sa.Column(
+            "release_id",
+            sa.String(length=128),
+            sa.ForeignKey("release_versions.release_id"),
+            nullable=False,
+        ),
         sa.Column("route", sa.String(length=64), nullable=False),
         sa.Column("provider", sa.String(length=128), nullable=False),
         sa.Column("model_name", sa.String(length=128), nullable=True),
@@ -182,15 +236,54 @@ def upgrade() -> None:
         *timestamp_columns(),
     )
 
+    op.create_table(
+        "observability_events",
+        sa.Column("event_id", sa.String(length=128), primary_key=True),
+        sa.Column("event_type", sa.String(length=128), nullable=False),
+        sa.Column("event_version", sa.String(length=32), nullable=False, server_default="v1"),
+        sa.Column("occurred_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("request_id", sa.String(length=128), nullable=False),
+        sa.Column("trace_id", sa.String(length=128), nullable=False),
+        sa.Column("producer", sa.String(length=128), nullable=False),
+        sa.Column(
+            "tenant_id",
+            sa.String(length=128),
+            sa.ForeignKey("tenants.tenant_id"),
+            nullable=True,
+        ),
+        sa.Column("user_id", sa.String(length=128), sa.ForeignKey("users.user_id"), nullable=True),
+        sa.Column("route", sa.String(length=64), nullable=True),
+        sa.Column("payload_json", sa.Text(), nullable=False),
+        *timestamp_columns(),
+    )
+
     op.create_index("ix_permissions_module_id", "permissions", ["module_id"])
     op.create_index("ix_tenant_users_user_id", "tenant_users", ["user_id"])
     op.create_index("ix_tenant_licenses_module_id", "tenant_licenses", ["module_id"])
     op.create_index("ix_index_versions_status", "index_versions", ["status"])
     op.create_index("ix_release_versions_status", "release_versions", ["status"])
     op.create_index("ix_cost_events_tenant_occurred", "cost_events", ["tenant_id", "occurred_at"])
+    op.create_index(
+        "ix_observability_events_type_occurred",
+        "observability_events",
+        ["event_type", "occurred_at"],
+    )
+    op.create_index(
+        "ix_observability_events_request_trace",
+        "observability_events",
+        ["request_id", "trace_id"],
+    )
+    op.create_index(
+        "ix_observability_events_tenant_occurred",
+        "observability_events",
+        ["tenant_id", "occurred_at"],
+    )
 
 
 def downgrade() -> None:
+    op.drop_index("ix_observability_events_tenant_occurred", table_name="observability_events")
+    op.drop_index("ix_observability_events_request_trace", table_name="observability_events")
+    op.drop_index("ix_observability_events_type_occurred", table_name="observability_events")
     op.drop_index("ix_cost_events_tenant_occurred", table_name="cost_events")
     op.drop_index("ix_release_versions_status", table_name="release_versions")
     op.drop_index("ix_index_versions_status", table_name="index_versions")
@@ -198,6 +291,7 @@ def downgrade() -> None:
     op.drop_index("ix_tenant_users_user_id", table_name="tenant_users")
     op.drop_index("ix_permissions_module_id", table_name="permissions")
 
+    op.drop_table("observability_events")
     op.drop_table("cost_events")
     op.drop_table("eval_runs")
     op.drop_table("release_versions")
@@ -212,4 +306,3 @@ def downgrade() -> None:
     op.drop_table("modules")
     op.drop_table("users")
     op.drop_table("tenants")
-

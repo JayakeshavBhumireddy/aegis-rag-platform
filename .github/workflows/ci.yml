@@ -5,24 +5,20 @@ on:
   push:
     branches:
       - main
+      - "feature/**"
+      - "codex/**"
 
 jobs:
-  repo-checks:
-    name: Repository checks
+  release-gate:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Validate JSON and YAML
-        run: python scripts/validation/validate_configs.py
+      - uses: astral-sh/setup-uv@v5
 
-      - name: Validate repo hygiene
-        run: python scripts/validation/check_repo_hygiene.py
-
+      - name: Run release gate
+        run: python scripts/validation/run_release_gate.py

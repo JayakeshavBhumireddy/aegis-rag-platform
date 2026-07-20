@@ -1,0 +1,118 @@
+{
+  "services": {
+    "assistant-api": {
+      "app": "assistant_api.main:app",
+      "port": 8000,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [
+        "entitlement-service",
+        "policy-service",
+        "context-service",
+        "retrieval-service",
+        "llm-gateway",
+        "verification-service",
+        "observability-service"
+      ],
+      "env": {
+        "AEGIS_ASSISTANT_DEPENDENCY_MODE": "http",
+        "AEGIS_AUTH_DEV_SECRET": "aegis-local-dev-secret"
+      }
+    },
+    "auth-service": {
+      "app": "auth_service.main:app",
+      "port": 8010,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {
+        "AEGIS_AUTH_DEV_SECRET": "aegis-local-dev-secret"
+      }
+    },
+    "context-service": {
+      "app": "context_service.main:app",
+      "port": 8013,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "entitlement-service": {
+      "app": "entitlement_service.main:app",
+      "port": 8011,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {
+        "AEGIS_ENTITLEMENT_STORE_MODE": "memory"
+      }
+    },
+    "eval-service": {
+      "app": "eval_service.main:app",
+      "port": 8019,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "ingestion-service": {
+      "app": "ingestion_service.main:app",
+      "port": 8018,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "llm-gateway": {
+      "app": "llm_gateway.main:app",
+      "port": 8015,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "observability-service": {
+      "app": "observability_service.main:app",
+      "port": 8017,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {
+        "AEGIS_OBSERVABILITY_STORE_MODE": "sqlite",
+        "AEGIS_OBSERVABILITY_SQLITE_PATH": "/app/data/observability/observability-events.db"
+      }
+    },
+    "policy-service": {
+      "app": "policy_service.main:app",
+      "port": 8012,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "retrieval-service": {
+      "app": "retrieval_service.main:app",
+      "port": 8014,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "reranker-service": {
+      "app": "reranker_service.main:app",
+      "port": 8020,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    },
+    "verification-service": {
+      "app": "verification_service.main:app",
+      "port": 8016,
+      "healthReadyPath": "/health/ready",
+      "healthLivePath": "/health/live",
+      "dependencies": [],
+      "env": {}
+    }
+  }
+}

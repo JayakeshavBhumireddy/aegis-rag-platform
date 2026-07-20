@@ -11,7 +11,8 @@ This document defines the relational metadata model for AegisRAG. Large document
 2. Release versions must be auditable and reversible.
 3. Eval runs must be linked to candidate releases.
 4. Cost events must be attributable by tenant, route, and model.
-5. Sensitive user content should not be stored in relational metadata.
+5. Audit, cost, and feedback event envelopes must be traceable by request and tenant when present.
+6. Sensitive user content should not be stored in relational metadata.
 
 ## Core Tables
 
@@ -20,7 +21,9 @@ erDiagram
     tenants ||--o{ tenant_users : has
     tenants ||--o{ tenant_licenses : owns
     tenants ||--o{ cost_events : incurs
+    tenants ||--o{ observability_events : emits
     users ||--o{ tenant_users : belongs_to
+    users ||--o{ observability_events : emits
     roles ||--o{ role_permissions : grants
     permissions ||--o{ role_permissions : included_in
     modules ||--o{ permissions : contains
@@ -176,6 +179,22 @@ erDiagram
 | cost_usd | decimal | estimated or actual |
 | occurred_at | timestamp | event time |
 
+### observability_events
+
+| Column | Type | Notes |
+|---|---|---|
+| event_id | string | primary key |
+| event_type | string | audit, cost, feedback, release, or pipeline event type |
+| event_version | string | event contract version |
+| occurred_at | timestamp | event time |
+| request_id | string | request correlation |
+| trace_id | string | distributed trace correlation |
+| producer | string | service that emitted the event |
+| tenant_id | string | nullable tenant attribution |
+| user_id | string | nullable user attribution |
+| route | string | nullable assistant route attribution |
+| payload_json | text | sanitized event payload JSON |
+
 ## Migration Rule
 
 This schema will be implemented through Alembic migrations under:
@@ -183,4 +202,3 @@ This schema will be implemented through Alembic migrations under:
 ```text
 services/platform-metadata/migrations/
 ```
-
