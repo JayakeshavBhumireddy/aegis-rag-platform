@@ -22,6 +22,8 @@
 - verifier
 - basic evals
 
+Status: implemented and verified by the local release gate and HTTP smoke test.
+
 ## Phase 2: Public Retrieval Benchmark
 
 - MS MARCO small subset

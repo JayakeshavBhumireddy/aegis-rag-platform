@@ -1,9 +1,13 @@
 # AegisRAG Platform
 
-Status: initial project scaffold  
-Date: 2026-05-07
+Status: verified local functional slice  
+Date: 2026-07-20
 
-This project contains the enterprise-scale architecture, service boundaries, data catalog, configs, infra placeholders, and evaluation structure for AegisRAG, a tenant-aware enterprise RAG platform.
+This project contains the first verified local implementation of AegisRAG, a
+tenant-aware enterprise RAG platform. The current repo includes service
+boundaries, executable FastAPI services, deterministic local ingestion,
+retrieval, reranking, generation, verification, observability, evals, release
+gates, and infrastructure contract scaffolding.
 
 The goal is to build a production-grade AI platform, not a simple RAG demo. The platform is designed for:
 
@@ -105,13 +109,26 @@ Edge Security
 - OpenTelemetry, CloudWatch, Datadog/Grafana
 - Terraform and Argo CD
 
-## Next Steps
+## Current Completion Backlog
 
-1. Finalize service contracts.
-2. Add dataset download manifests and ingestion jobs.
-3. Define eval schemas.
-4. Create Terraform module skeletons.
-5. Add API skeletons for core services.
+The local slice is built and verified. The remaining project work is tracked in:
+
+```text
+docs/operations/completion-backlog-v1.md
+```
+
+The main remaining themes are public retrieval benchmarks, real cloud
+infrastructure, production observability, scale and safety tests, CI/CD
+promotion workflows, and later V2 agent/MCP orchestration.
+
+## Learning Track
+
+Use this repo as a study lab for RAG architecture. The guided code-reading and
+design path lives in:
+
+```text
+docs/learning/rag-architecture-learning-map-v1.md
+```
 
 ## Local Functional Slice
 
